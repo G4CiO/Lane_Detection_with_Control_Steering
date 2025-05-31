@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <!-- We use a custom world for the rrbot so that the camera angle is launched correctly -->
+
+  <world name="default">
+
+    <scene>
+        <background>
+            <color>0 0 0 1</color>
+        </background>
+        <shadows>0</shadows>
+    </scene>
+
+   <!-- Add a sun light -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose> <!-- Center above the world at z=10 -->
+      <diffuse>1 1 1 1</diffuse> <!-- White sunlight -->
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction> <!-- Shining straight down -->
+    </light>
+
+    <include>
+      <uri>model://3lanemap</uri>
+      <pose>0 0 0 0 0 0</pose>
+      <surface>
+        <friction>
+          <ode>
+            <mu>1.0</mu>       <!-- Primary friction coefficient -->
+            <mu2>1.0</mu2>     <!-- Secondary friction coefficient -->
+            <fdir1>1 0 0</fdir1> <!-- Friction direction (optional) -->
+            <slip1>0.0</slip1> <!-- Reducing slip -->
+            <slip2>0.0</slip2>
+          </ode>
+        </friction>
+      </surface>
+    </include>
+
+      <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
+      <ros>
+        <namespace>/gazebo</namespace>
+      </ros>
+      <update_rate>5.0</update_rate>
+    </plugin>
+
+    <plugin name="gazebo_ros_factory" filename="libgazebo_ros_factory.so"/>
+
+  </world>
+</sdf>

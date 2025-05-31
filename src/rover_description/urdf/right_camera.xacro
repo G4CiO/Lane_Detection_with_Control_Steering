@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    <link name='right_camera_link'>
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0.0 0 0" rpy="0 0 0"/>
+            <inertia
+                ixx="1e-6" ixy="0" ixz="0"
+                iyy="1e-6" iyz="0"
+                izz="1e-6"
+            />
+        </inertial>
+        <visual name='right_camera_visual'>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.06 0.015"/>
+            </geometry>
+            <material name='right_camera_material'>
+                <color rgba="0 1 0 1"/> <!-- Green -->
+                <ambient>0.1 0.1 0.1 1</ambient>
+                <diffuse>0.1 0.1 0.2 1</diffuse>
+                <specular>0 0 0 0</specular>
+                <emissive>0 0 0 1</emissive>
+            </material>
+        </visual>
+        <collision name='right_camera_collision'>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.06 0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint type="fixed" name="right_camera_joint">
+        <origin xyz="0.084 -0.05 ${0.03+0.105}" rpy="0 0 0"/>
+        <!-- <origin xyz="0.084 -0.05 ${0.03+0.7}" rpy="0 0 0"/> -->
+        <child link="right_camera_link"/>
+        <parent link="base_link"/>
+    </joint>
+    <link name="right_link"></link>
+
+    <joint name="right_camera_to_camera_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2} "/>
+        <parent link="right_camera_link"/>
+        <child link="right_link"/>
+        </joint>
+
+    <gazebo reference="right_camera_link">
+        <material>Gazebo/Green</material>
+
+        <sensor name="camera" type="camera">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>100</update_rate>
+            <camera>
+                <horizontal_fov>1.089</horizontal_fov>
+                <image>
+                    <format>L8</format>
+                    <!-- <width>640</width>
+                    <height>480</height> -->
+                    <width>1384</width>
+                    <height>1032</height>
+                    <!-- <width>1241</width>
+                    <height>376</height> -->
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+            </camera>
+            <plugin name="right_camera_controller" filename="libgazebo_ros_camera.so">
+                <ros>
+                    <namespace>camera</namespace>
+                    <remapping>right_camera_link/image_raw:=right_image</remapping>
+                    <!-- <remapping>${name}/depth/image_raw:=depth/image_rect_raw</remapping> -->
+                    <remapping>right_camera_link/camera_info:=right_info</remapping>
+                    <!-- <remapping>${name}/depth/camera_info:=depth/camera_info</remapping> -->
+                    <!-- <remapping>${name}/points:=depth/points</remapping> -->
+                </ros>
+                <!-- <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate> -->
+                <camera_name>right_camera_link</camera_name>
+                <!-- <imageTopicName>left_image</imageTopicName> -->
+                <!-- <cameraInfoTopicName>left_info</cameraInfoTopicName> -->
+                <frame_name>right_link</frame_name>
+                <!-- <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2> -->
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>

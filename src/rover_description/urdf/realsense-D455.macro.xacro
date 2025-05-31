@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="realsense-d455" params="name parent cameras_sequence *origin">
+
+        <xacro:property name="d455_cam_width" value="0.124" />
+        <xacro:property name="d455_cam_height" value="0.029" />
+        <xacro:property name="d455_cam_depth" value="0.026" />
+        <xacro:property name="suffix" value="${cameras_sequence}" />
+
+
+        <!-- Connect camera to parent frame-->
+        <joint name="${name}d455_camera_joint" type="fixed">
+            <parent link="${parent}" />
+            <child link="${name}_d455_camera_link" />
+            <xacro:insert_block name="origin" />
+        </joint>
+
+        <!-- Camera link -->
+        <link name="${name}_d455_camera_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <geometry>
+                    <box size="${d455_cam_depth} ${d455_cam_width} ${d455_cam_height}" />
+                </geometry>
+                <material name="red" />
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${d455_cam_depth} ${d455_cam_width} ${d455_cam_height}" />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.0615752" />
+                <origin rpy="0 0 0" xyz="0 0 0" />
+                <inertia ixx="9.108e-05"
+                    ixy="0"
+                    ixz="0"
+                    iyy="2.51e-06"
+                    iyz="0"
+                    izz="8.931e-05"
+                />
+            </inertial>
+        </link>
+
+        <!-- Joints positioning the virtual links with respect to the camera main link-->
+        <joint name="${name}_depth_joint" type="fixed">
+            <parent link="${name}_d455_camera_link" />
+            <child link="${name}_depth_camera_link_optical" />
+            <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+        </joint>
+
+        <!-- Virtual links representing the cameras positons and orientations-->
+        <link name="${name}_depth_camera_link_optical" />
+
+
+        <!-- GAZEBO Parameters for VIRTUAL sensor -->
+        <gazebo reference="${name}_d455_camera_link">
+            <material>Gazebo/Red</material>
+                <sensor
+                    name="${name}_depth_camera" type="depth">
+                    <pose> 0 0 0 0 0 0 </pose>
+                    <visualize>true</visualize>
+                    <update_rate>10</update_rate>
+                    <camera>
+                        <horizontal_fov>1.089</horizontal_fov>
+                        <image>
+                            <format>B8G8R8</format>
+                            <width>640</width>
+                            <height>480</height>
+                        </image>
+                        <clip>
+                            <near>0.05</near>
+                            <far>8.0</far>
+                        </clip>
+                    </camera>
+
+                    <xacro:if value="${suffix == 'a'}">
+                        <plugin name="right_depth_camera_controller" filename="libgazebo_ros_camera.so">
+                            <frame_name>right_depth_camera_link_optical</frame_name>
+                            <min_depth>0.1</min_depth>
+                            <max_depth>100.0</max_depth>
+                        </plugin>
+                    </xacro:if>
+    
+                    <xacro:if value="${suffix == 'b'}">
+                        <plugin name="left_depth_camera_controller" filename="libgazebo_ros_camera.so">
+                            <frame_name>left_depth_camera_link_optical</frame_name>
+                            <min_depth>0.1</min_depth>
+                            <max_depth>100.0</max_depth>
+                        </plugin>
+                    </xacro:if>
+
+                </sensor>
+            </gazebo>
+    </xacro:macro>
+</robot>
