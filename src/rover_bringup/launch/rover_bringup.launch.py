@@ -43,6 +43,27 @@ def generate_launch_description():
         description='Select control mode: "pid" , "pure_pursuit" or "stanley"'
     )
 
+    # Declare launch argument for lowe_ratio
+    lowe_ratio_arg = DeclareLaunchArgument(
+        'lowe_ratio',
+        default_value='0.3',
+        description='Ratio of distance for best matching in lowe ratio'
+    )
+
+    # Declare launch argument for save data
+    save_data_arg = DeclareLaunchArgument(
+        'save_data',
+        default_value='false',
+        description='Set to true to save data for visual odometry'
+    )
+
+    # Declare launch argument for file name
+    filename_arg = DeclareLaunchArgument(
+        'filename',
+        default_value='visual_odometry_data',
+        description='File name to save visual odometry data'
+    )
+
     # launch sim gazebo
     sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -76,42 +97,38 @@ def generate_launch_description():
         namespace='',
         output='screen',
         prefix='xterm -e')
-
-    controller_server = Node(
-        package="rover_controller",
-        executable="controller_server.py",
-        name="controller_server",
-        parameters=[{"control_mode": LaunchConfiguration("control_mode")}]
-    )
-
+    
     path_publisher = Node(
         package="rover_controller",
         executable="path_publisher.py",
         name="path_publisher"
     )
-    
-    gps_node = Node(
-        package="limo_localization",
-        executable="fake_gps_node.py",
-        name="gps_node"
+
+    controller_server = Node(
+        package="rover_controller",
+        executable="controller_server.py",
+        name="controller_server",
+        parameters=[{"control_mode": LaunchConfiguration("control_mode")},
+                    {"save_data": LaunchConfiguration("save_data")},
+                    {"filename": LaunchConfiguration("filename")}
+                    ]
     )
-    
-    ekf_node = Node(
-        package="limo_localization",
-        executable="ekf_node.py",
-        name="ekf_node"
+
+    visual_odom_orb_bf = Node(
+        package="rover_controller",
+        executable="visual_odom_orb_bf.py",
+        name="visual_odometry",
+        parameters=[{"lowe_ratio": LaunchConfiguration("lowe_ratio")}]
     )
 
     launch_description = LaunchDescription()
     launch_description.add_action(steering_mode_arg)
     launch_description.add_action(control_mode_arg)
+    launch_description.add_action(lowe_ratio_arg)
     launch_description.add_action(sim)
     launch_description.add_action(steering_model_node)
     launch_description.add_action(odometry_calculation)
     launch_description.add_action(launch_teleop)
-    # launch_description.add_action(controller_server)
     launch_description.add_action(path_publisher)
-    # launch_description.add_action(gps_node)
-    # launch_description.add_action(ekf_node)
     
     return launch_description

@@ -38,7 +38,6 @@ class OptimizedStereoVO(Node):
         
         # Publishers
         self.odom_pub = self.create_publisher(Odometry, '/odometry/visual_odom', 10)
-        self.depth_pub = self.create_publisher(Image, '/depth_image', 10)
         
         # Core components
         self.bridge = CvBridge()
@@ -274,9 +273,6 @@ class OptimizedStereoVO(Node):
                 
                 self.prev_frame = current_frame
                 self.frame_history.append(current_frame)
-                
-                # Publish depth map
-                self.publish_depth_map(depth_map, left_msg.header)
                 
         except Exception as e:
             self.get_logger().error(f"Error in stereo processing: {str(e)}")
@@ -679,16 +675,6 @@ class OptimizedStereoVO(Node):
         )
         
         self.tf_broadcaster.sendTransform(tf_msg)
-
-    def publish_depth_map(self, depth_map, header):
-        """Publish depth map for visualization"""
-        try:
-            depth_msg = self.bridge.cv2_to_imgmsg(depth_map.astype(np.float32), "32FC1")
-            depth_msg.header = header
-            self.depth_pub.publish(depth_msg)
-        except Exception as e:
-            self.get_logger().warn(f"Failed to publish depth map: {str(e)}")
-
 
 def main(args=None):
     rclpy.init(args=args)
