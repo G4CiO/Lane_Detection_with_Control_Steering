@@ -183,7 +183,7 @@ I use the **pinhole camera model:**
 ```math
 X = \frac{(u-c_x)*Z}{f_x},
 Y = \frac{(v-c_y)*Z}{f_y},
-Z = depth_map[v,u]
+Z = depthmap[v,u]
 ```
 
 Where:
@@ -205,7 +205,7 @@ $$
 \begin{bmatrix}
 f_x & 0 & c_x 
 \\ 0 & f_y & c_y
-\\0 & 0 & 1
+\\ 0 & 0 & 1
 \end{bmatrix}
 $$
 
