@@ -16,8 +16,8 @@
 - Clone my workspace
     ```bash
     cd
-    git clone <url>
-    cd <ws name>
+    git clone https://github.com/G4CiO/Visual_Odometry_from_Scratch.git
+    cd Visual_Odometry_from_Scratch
     colcon build && source install/setup.bash
     ```
 ## ⚙️ How to run code
