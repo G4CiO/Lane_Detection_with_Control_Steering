@@ -4,6 +4,44 @@
 **Author**: Natthaphat Soookpanya (65340500023)  
 **Framework**: ROS 2 + Gazebo + OpenCV (Python)
 
+## Table of Contents
+- [Visual Odometry from Scratch](#visual-odometry-from-scratch)
+  - [Table of Contents](#table-of-contents)
+  - [🛠️ Install My Project](#️-install-my-project)
+    - [Dependencies](#dependencies)
+    - [Package](#package)
+  - [⚙️ How to run code](#️-how-to-run-code)
+  - [📌 Project Description](#-project-description)
+  - [🎯 Objectives](#-objectives)
+  - [✅ Requirements](#-requirements)
+    - [Functional Requirements](#functional-requirements)
+    - [Performance Requirements](#performance-requirements)
+  - [🔍 Scope](#-scope)
+  - [🧠 System Architecture](#-system-architecture)
+    - [1. Camera Input from Gazebo](#1-camera-input-from-gazebo)
+    - [2. Stereo to Depth Calculation](#2-stereo-to-depth-calculation)
+    - [3. Feature Detection \& Matching](#3-feature-detection--matching)
+    - [4. Motion Estimation](#4-motion-estimation)
+  - [🧑‍💻 Implementation](#-implementation)
+    - [1. Set Environment](#1-set-environment)
+    - [2. Set Robot](#2-set-robot)
+    - [3. Set Camera](#3-set-camera)
+    - [4. Setup Stereo Image Synchronization](#4-setup-stereo-image-synchronization)
+    - [5. Convert and Preprocess Images](#5-convert-and-preprocess-images)
+    - [6. Depth Map from Stereo](#6-depth-map-from-stereo)
+    - [7. ORB Feature Detection \& Matching](#7-orb-feature-detection--matching)
+    - [8. Lowe's Ratio Test](#8-lowes-ratio-test)
+    - [9. Get 3D Points from Depth Map](#9-get-3d-points-from-depth-map)
+    - [10. Motion Estimation (PnP + RANSAC)](#10-motion-estimation-pnp--ransac)
+    - [11. Pose Accumulation and Odometry Publishing](#11-pose-accumulation-and-odometry-publishing)
+  - [📊 Result](#-result)
+    - [Lowe's Ratio: 0.3](#lowes-ratio-03)
+    - [Lowe's Ratio: 0.5](#lowes-ratio-05)
+    - [Lowe's Ratio: 0.7](#lowes-ratio-07)
+    - [Update rate of camera](#update-rate-of-camera)
+  - [🏁 Conclusion](#-conclusion)
+
+
 ## 🛠️ Install My Project
 
 ### Dependencies
@@ -136,7 +174,7 @@ Where:
 
 ### 3. Feature Detection & Matching
 
-#### Steps:
+**Steps:**
 - **Feature Extraction**: Extract keypoints and descriptors from current and next left frames.
 - **Feature Matching**: Match descriptors using a matcher (e.g., BFMatcher).
 - **Match Filtering**: Filter poor matches using distance threshold.
