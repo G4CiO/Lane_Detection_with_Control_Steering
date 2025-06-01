@@ -7,10 +7,12 @@
 ## 🛠️ Install My Project
 
 ### Dependencies
-- Install `cv bridge`, `opencv`, `numpy`, `yaml`, `matplotlib`
+- Install ROS 2 humble, please refer to [ROS 2 installation](https://docs.ros.org/en/humble/Installation.html) to get started.
+- Install Gazebo, Rviz, for ROS 2 Humble.
+- Install `cv-bridge`, `opencv`, `numpy`, `yaml`, `matplotlib`
     ```bash
     sudo apt install ros-humble-cv-bridge ros-humble-image-transport ros-humble-message-filters
-    pip install opencv-python numpy pyyaml matplotlib
+    pip install opencv-python numpy pyyaml matplotlib cv-bridge
     ```
 ### Package
 - Clone my workspace
@@ -20,6 +22,14 @@
     cd Visual_Odometry_from_Scratch
     colcon build && source install/setup.bash
     ```
+- add source this package in .bashrc file.
+  ```bash
+  echo "source ~/Visual_Odometry_from_Scratch/install/setup.bash" >> ~/.bashrc
+  ```
+  - source this package for sure.
+  ```bash
+  source ~/.bashrc
+  ```
 ## ⚙️ How to run code
 
 1. Launch [rover_bringup.launch.py](src/rover_bringup/launch/rover_bringup.launch.py) for set environment from LAB 1 (gazebo), open RviZ, spawn robot, run controller for control robot.
