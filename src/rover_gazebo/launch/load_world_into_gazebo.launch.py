@@ -23,7 +23,8 @@ def generate_launch_description():
   # Set the path to the world file
   # world_file_name = 'basic.world'
   # world_file_name = 'limo.world'
-  world_file_name = 'limo_2.world'
+  world_file_name = 'limo_3.world'
+  # world_file_name = 'limo_v1.world'
   world_path = os.path.join(pkg_share, 'world', world_file_name)
    
   # Set the path to the SDF model files.

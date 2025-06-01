@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from limo_bringup.dummy_module import dummy_function, dummy_var
+from rover_controller.dummy_module import dummy_function, dummy_var
 import rclpy
 import math
 import tf2_ros

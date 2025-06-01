@@ -75,7 +75,7 @@ class OptimizedStereoVO(Node):
         
         # BruteForce matcher parameters
         self.declare_parameter('bf_cross_check', False)
-        self.declare_parameter('lowe_ratio', 0.8)
+        self.declare_parameter('lowe_ratio', 0.3)
         
         # Stereo matching parameters
         self.declare_parameter('num_disparities', 96)

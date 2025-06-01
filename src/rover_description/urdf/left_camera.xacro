@@ -48,21 +48,16 @@
 
     <gazebo reference="left_camera_link">
         <material>Gazebo/Green</material>
-
         <sensor name="camera" type="camera">
             <pose> 0 0 0 0 0 0 </pose>
-            <visualize>true</visualize>
+            <visualize>false</visualize>
             <update_rate>100</update_rate>
             <camera>
                 <horizontal_fov>1.089</horizontal_fov>
                 <image>
                     <format>L8</format>
-                    <!-- <width>640</width>
-                    <height>480</height> -->
                     <width>1384</width>
                     <height>1032</height>
-                    <!-- <width>1241</width>
-                    <height>376</height> -->
                 </image>
                 <clip>
                     <near>0.02</near>
@@ -73,23 +68,10 @@
                 <ros>
                     <namespace>camera</namespace>
                     <remapping>left_camera_link/image_raw:=left_image</remapping>
-                    <!-- <remapping>${name}/depth/image_raw:=depth/image_rect_raw</remapping> -->
                     <remapping>left_camera_link/camera_info:=left_info</remapping>
-                    <!-- <remapping>${name}/depth/camera_info:=depth/camera_info</remapping> -->
-                    <!-- <remapping>${name}/points:=depth/points</remapping> -->
                 </ros>
-                <!-- <alwaysOn>true</alwaysOn>
-                <updateRate>0.0</updateRate> -->
                 <camera_name>left_camera_link</camera_name>
-                <!-- <imageTopicName>left_image</imageTopicName> -->
-                <!-- <cameraInfoTopicName>left_info</cameraInfoTopicName> -->
                 <frame_name>left_link</frame_name>
-                <!-- <hackBaseline>0.07</hackBaseline>
-                <distortionK1>0.0</distortionK1>
-                <distortionK2>0.0</distortionK2>
-                <distortionK3>0.0</distortionK3>
-                <distortionT1>0.0</distortionT1>
-                <distortionT2>0.0</distortionT2> -->
             </plugin>
         </sensor>
     </gazebo>
